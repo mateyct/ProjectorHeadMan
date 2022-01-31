@@ -4,7 +4,7 @@
 #include <SDL_image.h>
 
 /// <summary>
-/// 
+/// Wrapper class for a texture that makes like just a bit easier. Renders at the middle of the image
 /// </summary>
 class PTexture {
 public:
@@ -36,6 +36,16 @@ public:
 	/// <param name="renderer">Renderer to show</param>
 	void render(int x, int y, int animIndex, SDL_Renderer* renderer);
 
+	/// <summary>
+	/// Sets the texture
+	/// </summary>
+	/// <param name="path">The path to load from</param>
+	/// <returns>Was it successful</returns>
+	bool loadImage(std::string path, SDL_Renderer* renderer);
+
+	// deallocates stuff
+	void free();
+
 private:
 	// Texture that the object holds
 	SDL_Texture* texture;
@@ -46,4 +56,3 @@ private:
 	// height of the texture
 	int height;
 };
-
