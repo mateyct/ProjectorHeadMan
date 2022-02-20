@@ -67,7 +67,7 @@ bool init() {
 			}
 			else {
 				// renderer color
-				SDL_SetRenderDrawColor(renderer, 0xFF, 0x00, 0xFF, 0xFF);
+				SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0xFF, 0xFF);
 
 				// init png SDL_image
 				int imgFlag = IMG_INIT_PNG;
@@ -169,7 +169,7 @@ int main() {
 				SDL_RenderClear(renderer);
 
 				frame++;
-				if (frame > 64) {
+				if (frame >= 64) {
 					frame = 0;
 				}
 				

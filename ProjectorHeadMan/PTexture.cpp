@@ -27,9 +27,9 @@ bool PTexture::loadImage(std::string path, SDL_Renderer* renderer) {
 		printf("Image %s couldn't load. Error: %s\n", path.c_str(), IMG_GetError());
 	}
 	else {
-		anim[0] = { 0, 0, loadSurf->w / 3, loadSurf->h / 2 };
-		anim[1] = { loadSurf->w / 3, 0, loadSurf->w * (2/3), loadSurf->h / 2 };
-		anim[2] = { loadSurf->w * (2 / 3), 0, loadSurf->w, loadSurf->h / 2 };
+		anim[0] = { 0, 0, loadSurf->w / 3, (int)(loadSurf->h / 2) };
+		anim[1] = { (int)(loadSurf->w / 3.0f), 0, (int)((loadSurf->w) / 3.0f), loadSurf->h / 2 };
+		anim[2] = { (int)(loadSurf->w * (2.0f / 3.0f)), 0, loadSurf->w, loadSurf->h / 2 };
 		anim[3] = { 0, loadSurf->h / 2, loadSurf->w / 3, loadSurf->h / 2 };
 
 		// create a new texture
