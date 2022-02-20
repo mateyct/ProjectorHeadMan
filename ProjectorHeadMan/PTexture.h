@@ -55,4 +55,7 @@ private:
 
 	// height of the texture
 	int height;
+
+	// list of rects for animation
+	SDL_Rect anim[4];
 };

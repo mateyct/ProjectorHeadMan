@@ -1,4 +1,6 @@
 #include "PTexture.h"
+#include "SDL.h"
+#include "SDL_image.h"
 
 PTexture::PTexture() {
 	texture = NULL;
@@ -25,7 +27,10 @@ bool PTexture::loadImage(std::string path, SDL_Renderer* renderer) {
 		printf("Image %s couldn't load. Error: %s\n", path.c_str(), IMG_GetError());
 	}
 	else {
-		//////////////// put extra stuff here later maybe ///////////////
+		anim[0] = { 0, 0, loadSurf->w / 3, loadSurf->h / 2 };
+		anim[1] = { loadSurf->w / 3, 0, loadSurf->w * (2/3), loadSurf->h / 2 };
+		anim[2] = { loadSurf->w * (2 / 3), 0, loadSurf->w, loadSurf->h / 2 };
+		anim[3] = { 0, loadSurf->h / 2, loadSurf->w / 3, loadSurf->h / 2 };
 
 		// create a new texture
 		newTexture = SDL_CreateTextureFromSurface(renderer, loadSurf);
@@ -56,13 +61,12 @@ void PTexture::free() {
 
 void PTexture::render(int x, int y, int animIndex, SDL_Renderer* renderer) {
 	// set part to render
-	SDL_Rect srcArea = { 0, 0, width, height };
 	SDL_Rect desArea = { x, y, width * 5, height * 5};
 	desArea.x -= desArea.w / 2;
 	desArea.y -= desArea.h / 2;
 
 	// render it
-	SDL_RenderCopy(renderer, texture, &srcArea, &desArea);
+	SDL_RenderCopy(renderer, texture, &anim[animIndex], &desArea);
 }
 
 int PTexture::getWidth() {
