@@ -2,6 +2,8 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include "./PTexture.h"
+#include <cmath>
+#include "PointVectorTools/PointVectorTools.h"
 
 #undef main
 
@@ -17,6 +19,15 @@ SDL_Window* window = NULL;
 
 // The main character texture
 PTexture character;
+
+// character acceleration
+SDL_Point acceleration = { 0, 0 };
+
+// character velocity
+SDL_Point velocity = { 0, 0 };
+
+// character position
+SDL_Point pos = { S_WIDTH / 2, S_HEIGHT / 2 };
 
 // Initialize all the stuff
 bool init();
@@ -106,6 +117,7 @@ int main() {
 		}
 		else {
 			bool quit = false;
+			int frame = 0;
 			// main loop
 			while (quit != true) {
 				// make event for getting info
@@ -115,11 +127,55 @@ int main() {
 					if (e.type == SDL_QUIT) {
 						quit = true;
 					}
+					// key events
+					if (e.type == SDL_KEYDOWN) {
+						SDL_Keycode key = e.key.keysym.sym;
+						if (key == SDLK_LEFT && !(velocity.x < 0)) {
+							velocity.x -= 5;
+						}
+						if (key == SDLK_RIGHT && !(velocity.x > 0)) {
+							velocity.x += 5;
+						}
+						if (key == SDLK_DOWN && !(velocity.y > 0)) {
+							velocity.y += 5;
+						}
+						if (key == SDLK_UP && !(velocity.y < 0)) {
+							velocity.y -= 5;
+						}
+					}
+					// key up to stop
+					if (e.type == SDL_KEYUP) {
+						SDL_Keycode key = e.key.keysym.sym;
+						if (key == SDLK_LEFT && velocity.x < 0) {
+							velocity.x = 0;
+						}
+						if (key == SDLK_RIGHT && velocity.x > 0) {
+							velocity.x = 0;
+						}
+						if (key == SDLK_DOWN && velocity.y > 0) {
+							velocity.y = 0;
+						}
+						if (key == SDLK_UP && velocity.y < 0) {
+							velocity.y = 0;
+						}
+					}
 				}
+				
+				// position calculations
+				pos.x += velocity.x;
+				pos.y += velocity.y;
+
 				// rerender things
 				SDL_RenderClear(renderer);
 
-				character.render(S_WIDTH / 2, S_HEIGHT / 2, 0, renderer);
+				frame++;
+				if (frame > 64) {
+					frame = 0;
+				}
+				
+				printf("%d", frame / 16);
+				character.render(pos.x, pos.y, frame / 16, renderer);
+
 
 				SDL_RenderPresent(renderer);
 			}
